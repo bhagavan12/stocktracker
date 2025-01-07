@@ -52,6 +52,8 @@ export const login = createAsyncThunk(
   async ({ username, password }, thunkAPI) => {
     try {
       const data = await loginUser(username, password);
+      console.log("fetched data userslice",data)
+      localStorage.setItem("userId",data.id);
       return data; 
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data || { error: 'Something went wrong' });
@@ -96,7 +98,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.user.username = action.payload.username;
         state.user.email = action.payload.email;
-        state.user.id = action.payload.rid;
+        state.user.id = action.payload.id;
         state.token = action.payload.token;
         // localStorage.setItem('token', action.payload.token);
         localStorage.setItem(
@@ -104,7 +106,7 @@ const userSlice = createSlice({
           JSON.stringify({
             username: action.payload.username,
             email: action.payload.email,
-            id: action.payload.rid,
+            id: action.payload.id,
           })
         );
       })
@@ -129,5 +131,5 @@ const userSlice = createSlice({
 });
 
 export const { logout } = userSlice.actions;
-
+export const loginedUser = (state) => state.user.user;
 export default userSlice.reducer;

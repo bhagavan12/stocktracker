@@ -33,7 +33,7 @@ function TradingViewWidget() {
         ticker: displaySymbol,
       };
       console.log("newStock",newStock);
-      dispatch(addStock({ userId: 1, stock: newStock })); // Assume userId is 1 for now
+      dispatch(addStock({ userId:localStorage.getItem("userId"), stock: newStock })); // Assume userId is 1 for now
       closeModal(); // Close modal after stock is added
       setStockName("");
       setStockQuantity(1);

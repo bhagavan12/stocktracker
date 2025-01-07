@@ -36,6 +36,7 @@ export const signupUser = async (username, email, password) => {
 export const fetchStocksFromBackend = async (userId) => {
     try {
       const response = await api.get(`api/stocks/portfolio/${userId}`);
+      console.log("userId",userId);
       return response.data;
     } catch (error) {
       throw error; // Will be handled in asyncThunk

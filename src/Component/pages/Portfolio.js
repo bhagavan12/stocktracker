@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchStocks, updateStock, deleteStock, selectStocks } from "../Slices/stockSlice";
 import { useNavigate } from "react-router-dom";
-
+import { loginedUser } from "../Slices/userSlice";
 const Portfolio = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const stocks = useSelector(selectStocks);
+    const luser = useSelector((state)=>state.user.user?.id)
     const [selectedStock, setSelectedStock] = useState(null);
     const [newQuantity, setNewQuantity] = useState(0);
     const [showModal, setShowModal] = useState(false);
@@ -14,7 +15,7 @@ const Portfolio = () => {
     const [stockToSell, setStockToSell] = useState(null);
     useEffect(() => {
         // Replace '1' with dynamic user ID if needed
-        dispatch(fetchStocks(1));
+        dispatch(fetchStocks(luser||localStorage.getItem('userId')));
     }, [dispatch]);
     const handleDeleteStock = (stockId) => {
         dispatch(deleteStock({ userId: 1, stockId }));
@@ -165,7 +166,7 @@ const Portfolio = () => {
 
     const confirmSellStock = () => {
         if (stockToSell) {
-            dispatch(deleteStock({ userId: 1, stockId: stockToSell.id }));
+            dispatch(deleteStock({ userId: localStorage.getItem('userId'), stockId: stockToSell.id }));
             setStockToSell(null);
             closeSellModal();
         }
